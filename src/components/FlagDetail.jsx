@@ -36,6 +36,12 @@ const FlagDetail = () => {
     </div>
   );
 
+  const coordinates = country.latlng || [];
+  const lat = coordinates[0];
+  const lng = coordinates[1];
+  const mapUrl = `https://maps.google.com?q=${lat},${lng}`;
+  const embedMapUrl = `https://maps.google.com/maps?q=${lat},${lng}&z=5&output=embed`;
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       <Link 
@@ -79,6 +85,10 @@ const FlagDetail = () => {
                 <p className="font-semibold text-blue-700">Subregion:</p>
                 <p className="text-blue-900">{country.subregion || 'N/A'}</p>
               </div>
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <p className="font-semibold text-blue-700">Timezones:</p>
+                <p className="text-blue-900">{country.timezones?.join(', ') || 'N/A'}</p>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -98,7 +108,24 @@ const FlagDetail = () => {
                   {country.languages ? Object.values(country.languages).join(', ') : 'N/A'}
                 </p>
               </div>
+              <div className="bg-blue-50 p-3 rounded-lg">
+                <p className="font-semibold text-blue-700">Area:</p>
+                <p className="text-blue-900">{country.area?.toLocaleString()} km²</p>
+              </div>
             </div>
+          </div>
+
+          <div className="bg-blue-100 p-4 rounded-lg">
+            <p className="font-semibold text-blue-700">Location Coordinates:</p>
+            <p className="text-blue-900">Latitude: {lat}°, Longitude: {lng}°</p>
+            <a 
+              href={mapUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-700 underline hover:text-blue-900 block mt-2"
+            >
+              View Exact Location on Google Maps
+            </a>
           </div>
 
           {country.borders && (
@@ -117,6 +144,21 @@ const FlagDetail = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      <div className="mt-12">
+        <h2 className="text-2xl font-bold text-center text-blue-800 mb-4">Exact Map Location</h2>
+        <div className="w-full h-[400px] overflow-hidden rounded-lg shadow-lg">
+          <iframe
+            src={embedMapUrl}
+            width="100%"
+            height="100%"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Country Location Map"
+          ></iframe>
         </div>
       </div>
     </div>
